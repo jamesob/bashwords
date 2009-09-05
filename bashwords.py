@@ -50,24 +50,24 @@ def add():
     print("Word added. %d total words in collection." % numEntries)
 
 def delete():
-	"""Open the dictionary, delete an entry, dump modified dictionary."""
-	dict = loadDict()
+    """Open the dictionary, delete an entry, dump modified dictionary."""
+    dict = loadDict()
 
-	mark = raw_input("Word to delete: ")
+    mark = raw_input("Word to delete: ")
 
-	index = -1
+    index = -1
 
-	for i in dict:
-		if i["word"] == mark:
-			index = dict.index(i)
-	
-	if index == -1:
-		print("'%s' not found. No modifications made." % mark)
-	else:
-		del dict[index]
-		print("Entry for '%s' successfully removed." % mark)
+    for i in dict:
+        if i["word"] == mark:
+            index = dict.index(i)
+    
+    if index == -1:
+        print("'%s' not found. No modifications made." % mark)
+    else:
+        del dict[index]
+        print("Entry for '%s' successfully removed." % mark)
 
-	dumpDict(dict)
+    dumpDict(dict)
 
 # -------------------
 # utilities
@@ -90,9 +90,9 @@ def dumpDict(newDict):
     return True
     
 if __name__ == '__main__':
-	import sys
-	choice = sys.argv[1]
+    import sys
+    choice = sys.argv[1]
 
-	{'add':     add,
+    {'add':     add,
      'define':  define}[choice]()
 

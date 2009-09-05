@@ -1,44 +1,44 @@
 
-	bashwords - a work in progress
+    bashwords - a work in progress
     by jamesob
 
-	* bashwords is a very minimal vocabulary trainer for the BASH
-	  environment. It was designed with simplicity at the forefront.
+    * bashwords is a very minimal vocabulary trainer for the BASH
+      environment. It was designed with simplicity at the forefront.
 
-	  Basically, all it does is affixes a pseudo-random vocabulary
-	  word from a user(that's you)-defined dictionary to your
-	  command prompt; e.g,
+      Basically, all it does is affixes a pseudo-random vocabulary
+      word from a user(that's you)-defined dictionary to your
+      command prompt; e.g,
 
-	  	analgesic|host:dir usr$
-	  	apropos|host:dir usr$
-	  	bucolic|host:dir usr$
+        analgesic|host:dir usr$
+        apropos|host:dir usr$
+        bucolic|host:dir usr$
 
-	  Unsure of a word's meaning?
+      Unsure of a word's meaning?
 
-	  	analgesic|host:dir usr$ define
-	      analgesic
-	      Definition: acting to relieve pain
-	      Synonyms: ['anesthetic', ' anodyne']
-	  
-	  Like to add a word?
+        analgesic|host:dir usr$ define
+        analgesic
+        Definition: acting to relieve pain
+        Synonyms: ['anesthetic', ' anodyne']
+      
+      Like to add a word?
 
-	  	analgesic|host:dir usr$ addword
-		Which word would you like to add?: ameliorate
-		Its definition?: make something (bad or unsatisfactory) better
-		Some synonyms? (delimit each with ','): enhance, alleviate 
-		Word added. 4 total words in collection.
+        analgesic|host:dir usr$ addword
+        Which word would you like to add?: ameliorate
+        Its definition?: make something (bad or unsatisfactory) better
+        Some synonyms? (delimit each with ','): enhance, alleviate 
+        Word added. 4 total words in collection.
 
-	  It has, by no means, been optimized for performance and I
-	  won't be held liable if you ralph while browsing the source.
+      It has, by no means, been optimized for performance and I
+      won't be held liable if you ralph while browsing the source.
 
-	* to install
-		0. create a directory ~/.bashwords/
-		1. move all files (configure.py, cycle.py, bashwords.py) 
-		   into .bashwords/
-		2. run configure.py
-			-"python configure.py"
+    * to install
+        0. create a directory ~/.bashwords/
+        1. move all files (configure.py, cycle.py, bashwords.py) 
+           into .bashwords/
+        2. run configure.py
+            -"python configure.py"
 
-	
+    
 Copyright (c) 2009 James O'Beirne
 
 Permission is hereby granted, free of charge, to any person
