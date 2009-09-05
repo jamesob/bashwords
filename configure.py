@@ -26,7 +26,8 @@ def writeToBash():
 
 	addendum = "# ------for bashwords-------" + \
 			   "\nalias define='python $HOME/.bashwords/bashwords.py define'" + \
-			   "\npython ~/.bashwords/bashwords.py cycle" + \
+			   "\nalias addword='python $HOME/.bashwords/bashwords.py add'" + \
+			   "\npython ~/.bashwords/cycle.py" + \
 			   "\nsource ~/.bashwords/exports.sh" + \
 			   "\n# --------------------------\n\n"
 

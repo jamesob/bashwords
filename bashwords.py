@@ -22,7 +22,7 @@ def define():
     defin   = os.getenv("currDefinition")
     syns    = os.getenv("currSynonyms")
 
-    print("\t%s\n\tDefinition: %s\n\tSynonyms: %s"
+    print("  %s\n  Definition: %s\n  Synonyms: %s"
           % (word, defin, syns))
 
 def add():
@@ -69,21 +69,6 @@ def delete():
 
 	dumpDict(dict)
 
-def cycle():
-	"""
-	Unpickles dictionary, selects a random word, loads relevant
-	information into BASH's environment.
-	"""
-	dict = loadDict()
-
-	currWord = random.sample(dict, 1)[0]
-
-	with open(home + '/.bashwords/exports.sh', 'w') as f:
-		f.write('export currWord="%s"\n' % currWord["word"])
-		f.write('export currDefinition="%s"\n' % currWord["definition"])
-		f.write('export currSynonyms="%s"\n' % currWord["synonyms"])
-		f.write('PS1="$currWord|$PS1"\n')     
-
 # -------------------
 # utilities
 # -------------------
@@ -109,7 +94,5 @@ if __name__ == '__main__':
 	choice = sys.argv[1]
 
 	{'add':     add,
-     'define':  define,
-	 'cycle':   cycle}[choice]()
-
+     'define':  define}[choice]()
 
