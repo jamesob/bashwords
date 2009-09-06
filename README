@@ -28,7 +28,7 @@
         Some synonyms? (delimit each with ','): enhance, alleviate 
         Word added. 4 total words in collection.
 
-	  How about deleting? Use "delword".
+      How about deleting? Use "delword".
 
         analgesic|host:dir usr$ delword
         Word to delete: ameliorate
