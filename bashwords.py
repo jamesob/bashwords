@@ -98,7 +98,7 @@ def dumpDict(newDict):
     return True
 
 def alphaSort(dict):
-    """Sorts a list of dictionaries alphabetically
+    """Sorts a list of dictionaries alphabetically"""
     alphacmp = lambda a,b: cmp(a['word'], b['word'])
 
     dict.sort(alphacmp)
