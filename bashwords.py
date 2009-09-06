@@ -69,6 +69,14 @@ def delete():
 
     dumpDict(dict)
 
+def lsWords():
+    """List all words currently in dictionary."""
+
+    dict = loadDict()
+    dict = alphaSort(dict)
+    for i in dict:
+        print(i['word'])
+
 # -------------------
 # utilities
 # -------------------
@@ -88,6 +96,13 @@ def dumpDict(newDict):
         cPickle.dump(newDict, f)
 
     return True
+
+def alphaSort(dict):
+    alphacmp = lambda a,b: cmp(a['word'], b['word'])
+
+    dict.sort(alphacmp)
+
+    return dict
     
 if __name__ == '__main__':
     import sys
@@ -95,5 +110,6 @@ if __name__ == '__main__':
 
     {'add':     add,
      'define':  define,
-	 'delete':  delete}[choice]()
+	 'delete':  delete,
+     'lswords': lsWords}[choice]()
 

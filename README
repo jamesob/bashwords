@@ -34,6 +34,8 @@
         Word to delete: ameliorate
         Entry for 'ameliorate' successfully removed.
 
+      List all words in dictionary with "lswords".
+
       It has, by no means, been optimized for performance and I
       won't be held liable if you ralph while browsing the source.
 
