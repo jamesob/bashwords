@@ -32,7 +32,7 @@ def add():
     """
     dict = loadDict()
 
-    word = raw_input("Which word would you like to add?: ")
+    word = raw_input("Which word would you like to add?: ").lower()
     defin = raw_input("Its definition?: ")
     syns = raw_input("Some synonyms? (delimit each with ','): ").split(',') 
 
@@ -53,7 +53,7 @@ def delete():
     """Open the dictionary, delete an entry, dump modified dictionary."""
     dict = loadDict()
 
-    mark = raw_input("Word to delete: ")
+    mark = raw_input("Word to delete: ").lower()
 
     index = -1
 
@@ -94,5 +94,6 @@ if __name__ == '__main__':
     choice = sys.argv[1]
 
     {'add':     add,
-     'define':  define}[choice]()
+     'define':  define,
+	 'delete':  delete}[choice]()
 

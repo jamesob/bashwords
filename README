@@ -6,27 +6,33 @@
       environment. It was designed with simplicity at the forefront.
 
       Basically, all it does is affixes a pseudo-random vocabulary
-      word from a user(that's you)-defined dictionary to your
+      word from a user-defined (that's you) dictionary to your
       command prompt; e.g,
 
         analgesic|host:dir usr$
         apropos|host:dir usr$
         bucolic|host:dir usr$
 
-      Unsure of a word's meaning?
+      Unsure of a word's meaning? Use "define".
 
         analgesic|host:dir usr$ define
         analgesic
         Definition: acting to relieve pain
         Synonyms: ['anesthetic', ' anodyne']
       
-      Like to add a word?
+      Like to add a word? Use "addword".
 
         analgesic|host:dir usr$ addword
         Which word would you like to add?: ameliorate
         Its definition?: make something (bad or unsatisfactory) better
         Some synonyms? (delimit each with ','): enhance, alleviate 
         Word added. 4 total words in collection.
+
+	  How about deleting? Use "delword".
+
+        analgesic|host:dir usr$ delword
+        Word to delete: ameliorate
+        Entry for 'ameliorate' successfully removed.
 
       It has, by no means, been optimized for performance and I
       won't be held liable if you ralph while browsing the source.
