@@ -6,15 +6,19 @@ import shutil
 import cPickle
 
 home = os.getenv("HOME")
-installDir = home + "/.bashwords/"
+installDir = home + "/.bashwords1/"
 
 def install():
     """docstring for install"""
 
-	# If we haven't created installDir yet...
-	if not os.path.exists(installDir):
-		print("Creating %s..." % installDir)
-		os.mkdir(installDir)
+    # If we haven't created installDir yet...
+    if not os.path.exists(installDir):
+        print("Creating %s..." % installDir)
+        os.mkdir(installDir)
+
+	shutil.copy("./setup.py", installDir)
+	shutil.copy("./bashwords.py", installDir)
+	shutil.copy("./cycle.py", installDir)
 
     os.chdir(installDir)
 
