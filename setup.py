@@ -11,6 +11,11 @@ installDir = home + "/.bashwords/"
 def install():
     """docstring for install"""
 
+	# If we haven't created installDir yet...
+	if not os.path.exists(installDir):
+		print("Creating %s..." % installDir)
+		os.mkdir(installDir)
+
     os.chdir(installDir)
 
     if os.path.exists("./wordbank.dat"):
