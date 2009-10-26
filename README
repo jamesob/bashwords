@@ -40,11 +40,10 @@
       won't be held liable if you ralph while browsing the source.
 
     * to install
-        0. create a directory ~/.bashwords/
-        1. move all files (configure.py, cycle.py, bashwords.py) 
-           into .bashwords/
-        2. run configure.py
-            -"python configure.py"
+        (0. crack open setup.py and specify an install directory
+		    if you want somewhere other than the default, 
+			"~/.bashwords/")
+		1. run "python setup.py install"
 
     
 Copyright (c) 2009 James O'Beirne

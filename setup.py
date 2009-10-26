@@ -6,7 +6,7 @@ import shutil
 import cPickle
 
 home = os.getenv("HOME")
-installDir = home + "/.bashwords1/"
+installDir = home + "/.bashwords/"
 
 def install():
     """docstring for install"""
