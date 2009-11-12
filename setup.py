@@ -9,7 +9,8 @@ home = os.getenv("HOME")
 installDir = home + "/.bashwords/"
 
 def install():
-    """docstring for install"""
+    """Copy some files, source some files, day-in-day-out it's
+	the same grind."""
 
     # If we haven't created installDir yet...
     if not os.path.exists(installDir):
@@ -33,7 +34,8 @@ def install():
     createDict()
 
 def writeToBash():
-    """When we enter this function, we are in installDir."""
+    """When we enter this function, we are in installDir.
+	Ugly string handling, we need to fix that."""
 
     # iffen der bashdefs.sh has already been made, return
     if os.path.exists("bashdefs.sh"):
@@ -46,6 +48,8 @@ def writeToBash():
     # tell BASHenheim vherein to finden der commands
     defs = "\nalias define='python " + installDir + "/bashwords.py define'" + \
            "\nalias addword='python " + installDir + "/bashwords.py add'" + \
+           "\nalias lswords='python " + installDir + "/bashwords.py lsWords'" + \
+           "\nalias rmword='python " + installDir + "/bashwords.py delete'" + \
            "\npython " + installDir + "/cycle.py" + \
            "\nsource " + installDir + "/exports.sh\n"
 
@@ -62,7 +66,6 @@ def writeToBash():
     
     
 def createDict():
-    """docstring for createDict"""
     from bashwords import wordbank
 
     wb = wordbank()

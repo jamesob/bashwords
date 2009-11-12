@@ -51,19 +51,20 @@ class wordbank(object):
     average age, and manages prioritization."""
     
     def __init__(self):
-        self.words   = []
+        """The dictionary "words" holds all words currently in dictionary.
+        "wstack" holds words currently cued up."""
+        self.words  = []
+        self.wstack = []
 
     def __calcAvg(self, prop):
-        """Calculate the average value of a numerical property for each
+        """Calculate the average value of some scalar property for each
         word in the dictionary."""
+
         if len(self.words) == 0:
             return 0
-
         tot = 0
-
         for w in self.words:
             tot += getattr(w, prop)
-
         return tot/len(self.words)
 
     # lazy evaluation for the win. Properties are for tireless young
@@ -72,7 +73,6 @@ class wordbank(object):
                       doc="average age of words")
     avgHits = property(lambda self: self.__calcAvg("hits"), 
                        doc="avg hits on words")
-
 
     def __listSorted(self, sortfnc):
         """Print list of word bank entries sorted by some function."""
@@ -89,16 +89,22 @@ class wordbank(object):
         sortfnc = self.__compareBy("name")
         self.__listSorted(sortfnc)
 
-    def add(self, newword):
+    def add(self):
         """Add a word object to the dictionary."""
-        name = newword.name
+
+        name = raw_input("Title of word: ")
+        defin = raw_input("Its definition: ")
+        syns = raw_input("Some synonyms? (delimit each with ','): ").split(',') 
+
         if name not in self.words:
-            self.words[name] = newword
+            newword = word(name, defin, syns)
+            self.words[newword.name] = newword
         else:
             print("'%s' already in word bank!" % name)
 
     def remove(self, name):
         """Takes a name (string) of the word to delete then removes it."""
+
         if name in self.words:
             del self.words[name]
             print("'%s' removed from word bank successfully." % name)
@@ -106,12 +112,30 @@ class wordbank(object):
             print("'%s' not in word bank!" % name)
 
     def nextWord(self):
-        if self.words == []:
-            print("Word bank empty.")
-            exit()
-        randword = random.choice(self.words.values())
+        if self.wstack == []:
+            self.__makeStack()
+        randword = self.wstack.pop(random.randrange(0, len(self.wstack) + 1))
         return randword.access()
 
+    def __makeStack(self):
+        """Make a stack of next words 1/5 the size of the word bank.
+        Words with lower hit counts are given precedence."""
+
+        # sort words by hits, increasing
+        sortByHits = self.__compareBy("hits")
+        self.words.sort(sortByHits)
+        self.words.reverse()
+
+        if len(self.words) >= 5:
+            stackSize = len(self.words)/5
+        else if len(self.words) > 0:
+            stackSize = 5
+        else:
+            print("No words in bank! Quiting.")
+            exit()
+
+        for i in range(stackSize):
+            self.wstack.append(self.words[i])
 
 # -------------------
 # actions
@@ -131,12 +155,9 @@ def add(dict):
     Crack open the dictionary with cPickle, add the word, then
     dump it back to file.
     """
-    name = raw_input("Which word would you like to add?: ").lower()
-    defin = raw_input("Its definition?: ")
-    syns = raw_input("Some synonyms? (delimit each with ','): ").split(',') 
 
-    dict.add(word(name, defin, syns))
-
+    dict.add()
+    
     numEntries = len(dict.words)
     dumpDict(dict)
 
