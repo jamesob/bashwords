@@ -98,7 +98,7 @@ class wordbank(object):
 
         if name not in self.words:
             newword = word(name, defin, syns)
-            self.words[newword.name] = newword
+            self.words.append(newword)
         else:
             print("'%s' already in word bank!" % name)
 
@@ -126,10 +126,13 @@ class wordbank(object):
         self.words.sort(sortByHits)
         self.words.reverse()
 
+        # if we've got more than 5 words in the dictionary, make the stack's
+        # cardinality one fifth of the word bank's. Otherwise, just add
+        # all words to the stack or quit, if we haven't any words.
         if len(self.words) >= 5:
             stackSize = len(self.words)/5
-        else if len(self.words) > 0:
-            stackSize = 5
+        elif len(self.words) > 0:
+            stackSize = len(self.words)
         else:
             print("No words in bank! Quiting.")
             exit()

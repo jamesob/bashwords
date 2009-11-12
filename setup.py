@@ -48,7 +48,7 @@ def writeToBash():
     # tell BASHenheim vherein to finden der commands
     defs = "\nalias define='python " + installDir + "/bashwords.py define'" + \
            "\nalias addword='python " + installDir + "/bashwords.py add'" + \
-           "\nalias lswords='python " + installDir + "/bashwords.py lsWords'" + \
+           "\nalias lswords='python " + installDir + "/bashwords.py lswords'" + \
            "\nalias rmword='python " + installDir + "/bashwords.py delete'" + \
            "\npython " + installDir + "/cycle.py" + \
            "\nsource " + installDir + "/exports.sh\n"
