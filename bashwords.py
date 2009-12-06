@@ -112,9 +112,12 @@ class wordbank(object):
             print("'%s' not in word bank!" % name)
 
     def nextWord(self):
+        """Pops a random word from the stack and access the word, thereby
+        returning the word's information to cycle.py."""
+
         if self.wstack == []:
             self.__makeStack()
-        randword = self.wstack.pop(random.randrange(0, len(self.wstack) + 1))
+        randword = self.wstack.pop(random.randint(0, len(self.wstack) - 1))
         return randword.access()
 
     def __makeStack(self):
