@@ -61,8 +61,9 @@ def writeToBash():
               "source "+installDir+"bashdefs.sh\n" + \
               "# -----------------------------------\n"
 
-    with open(home + '/.bash_profile', 'a') as bash:
-        bash.write(bashmod)
+    if os.system("grep 'for bashwords' ~/.bash_profile") != 0:
+        with open(home + '/.bash_profile', 'a') as bash:
+            bash.write(bashmod)
     
     
 def createDict():

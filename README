@@ -36,7 +36,19 @@
 
       List all words in dictionary with "lswords".
 
-      It has, by no means, been optimized for performance and I
+	  Batch import words with "python bashwords.py fromFile".
+	  File format:
+	      [name of word]
+		  [definition]
+		  [synonyms]
+		  [blank line]
+
+      Dump all words currently in bank to file with
+	  "python bashwords.py toFile". File comes in same format as above.
+
+      ------------------------
+
+      Bashwords has, by no means, been optimized for performance and I
       won't be held liable if you ralph while browsing the source.
 
     * to install

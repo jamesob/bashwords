@@ -102,6 +102,12 @@ class wordbank(object):
         else:
             print("'%s' already in word bank!" % name)
 
+    def shortAdd(self, word):
+        if word.name not in self.words:
+            self.words.append(word)
+        else:
+            print("'%s' already in word bank!" % name)
+
     def remove(self, name):
         """Takes a name (string) of the word to delete then removes it."""
 
@@ -127,7 +133,6 @@ class wordbank(object):
         # sort words by hits, increasing
         sortByHits = self.__compareBy("hits")
         self.words.sort(sortByHits)
-        self.words.reverse()
 
         # if we've got more than 5 words in the dictionary, make the stack's
         # cardinality one fifth of the word bank's. Otherwise, just add
@@ -142,6 +147,32 @@ class wordbank(object):
 
         for i in range(stackSize):
             self.wstack.append(self.words[i])
+    
+    def toFile(self, filename):
+        """Outputs all words in wordbank to file."""
+        with open(filename, "w") as f:
+            for w in self.words:
+                synstring = ""
+                for syn in w.syns:
+                    synstring += syn + ","
+                synstring = synstring[:-1]
+                wordinfo = [w.name, w.defin, synstring, ""]
+                wordinfo = [l + "\n" for l in wordinfo]
+                f.writelines(wordinfo)
+
+    def fromFile(self, filename):
+        """Intakes words from a file."""
+        with open(filename, "r") as f:
+            lines = f.readlines()
+            lines = [l.rstrip('\n') for l in lines]
+            while lines != []:
+                name = lines.pop(0)
+                defin = lines.pop(0)
+                syns = lines.pop(0).split(',')
+                newword = word(name, defin, syns)
+                self.shortAdd(newword)
+                # remove hits, newline
+                lines.pop(0)
 
 # -------------------
 # actions
@@ -179,6 +210,15 @@ def lsWords(dict):
     """List all words currently in dictionary."""
     dict.printByAlpha()
 
+def toFile(dict):
+    filename = raw_input("Name of file to write to: ")
+    dict.toFile(filename)
+
+def fromFile(dict):
+    filename = raw_input("Name of file to extract from: ")
+    dict.fromFile(filename)
+    dumpDict(dict)
+
 # -------------------
 # utilities
 # -------------------
@@ -208,5 +248,7 @@ if __name__ == '__main__':
     {'add':     add,
      'define':  define,
      'delete':  delete,
-     'lswords': lsWords}[choice](dict)
+     'lswords': lsWords,
+     'toFile': toFile,
+     'fromFile': fromFile}[choice](dict)
 
