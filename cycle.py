@@ -21,10 +21,10 @@ def cycle():
     with open("%s/wordbank.dat" % installDir, "r") as f:
         dict = cPickle.load(f)
 
-    currWord = dict.nextWord()
-    name = currWord[0]
-    defin = currWord[1]
-    syns = currWord[2]
+    word = dict.nextWord()
+    name = word.name
+    defin = word.defin
+    syns = word.syns
 
     with open('%s/exports.sh' % installDir, 'w') as f:
         f.write('export currWord="%s"\n' % name)

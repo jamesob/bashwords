@@ -51,10 +51,8 @@ class wordbank(object):
     average age, and manages prioritization."""
     
     def __init__(self):
-        """The dictionary "words" holds all words currently in dictionary.
-        "wstack" holds words currently cued up."""
+        """The dictionary "words" holds all words currently in dictionary."""
         self.words  = []
-        self.wstack = []
 
     def __calcAvg(self, prop):
         """Calculate the average value of some scalar property for each
@@ -121,32 +119,7 @@ class wordbank(object):
         """Pops a random word from the stack and access the word, thereby
         returning the word's information to cycle.py."""
 
-        if self.wstack == []:
-            self.__makeStack()
-        randword = self.wstack.pop(random.randint(0, len(self.wstack) - 1))
-        return randword.access()
-
-    def __makeStack(self):
-        """Make a stack of next words 1/5 the size of the word bank.
-        Words with lower hit counts are given precedence."""
-
-        # sort words by hits, increasing
-        sortByHits = self.__compareBy("hits")
-        self.words.sort(sortByHits)
-
-        # if we've got more than 5 words in the dictionary, make the stack's
-        # cardinality one fifth of the word bank's. Otherwise, just add
-        # all words to the stack or quit, if we haven't any words.
-        if len(self.words) >= 5:
-            stackSize = len(self.words)/5
-        elif len(self.words) > 0:
-            stackSize = len(self.words)
-        else:
-            print("No words in bank! Quiting.")
-            exit()
-
-        for i in range(stackSize):
-            self.wstack.append(self.words[i])
+        return self.words[random.randint(0, len(self.words)-1)]
     
     def toFile(self, filename):
         """Outputs all words in wordbank to file."""
