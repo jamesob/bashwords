@@ -92,7 +92,7 @@ class wordbank(object):
 
         name = raw_input("Title of word: ")
         defin = raw_input("Its definition: ")
-        syns = raw_input("Some synonyms? (delimit each with ','): ").split(',') 
+        syns = raw_input("Some synonyms? (delimit each with ', '): ").split(', ') 
 
         if name not in self.words:
             newword = word(name, defin, syns)
