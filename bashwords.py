@@ -2,6 +2,7 @@
 
 from __future__ import with_statement
 import os
+import sys
 import datetime
 import cPickle
 import random
@@ -94,8 +95,6 @@ class wordbank(object):
         parameter."""
         return lambda a,b: cmp(getattr(a, paramStr), getattr(b, paramStr))
      
-    # lazy evaluation for the win. Properties are for tireless young
-    # go-getters who cherish the weekends in sleek, beach-front summerhouses.
     avgAge = property(lambda self: self._calcAvg("age"), 
                       doc="average age of words")
     avgHits = property(lambda self: self._calcAvg("hits"), 
@@ -118,11 +117,16 @@ class wordbank(object):
         """
         sortfnc = sortfnc or self._compareBy("name")
         self.sort(sortfnc)
-        print "{0:<25s} {1:<6s} {2:<6s}".format("name", "hits", "age (days)")
-        print
-        for w in self.words:
-            print "{0:<25s} {1:<6d} {2:<6d}".format(w.name, w.hits, w.age)
-
+        if sys.version_info >= (2, 6):
+            print "{0:<25s} {1:<6s} {2:<6s}".format("name", "hits", "age (days)")
+            print
+            for w in self.words:
+                print "{0:<25s} {1:<6d} {2:<6d}".format(w.name, w.hits, w.age)
+        else:
+            print "%25s %6s %6s" % ("name", "hits", "age (days)")
+            print
+            for w in self.words:
+                print "%25s %6d %6d" % (w.name, w.hits, w.age) 
     def printByAlpha(self): 
         sortfnc = self._compareBy("name")
         self._listSorted(sortfnc)
