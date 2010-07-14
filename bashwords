@@ -8,14 +8,13 @@ import cPickle
 import random
 
 # where are we?
-from setup import INSTALL_DIR
 
 # -------------------
 # globals
 # -------------------
 
-home  = os.getenv("HOME")
-today = datetime.date.today()
+# change this if you like 
+BASHWORDS_DIR = "%s/.bashwords" % os.getenv("HOME")
 
 DEBUG = 1
 
@@ -45,7 +44,7 @@ class word:
 
     def __calcAge(self):
         """Return age of entry in days."""
-        return (today - self.indate).days
+        return (datetime.date.today() - self.indate).days
 
     age = property(__calcAge, doc="how many days this word has been in bank")
     
@@ -61,9 +60,8 @@ class wordbank(object):
     average age, and manages prioritization."""
 
     def bankTransaction(func):
-        """
-        A decorator which ensures functions serialize a modified `wordbank` out.
-        """
+        """A decorator which ensures functions serialize a modified `wordbank`
+        out."""
         def trans(*args):
             self = args[0]
             ret = func(*args)
@@ -103,7 +101,7 @@ class wordbank(object):
 
     def _dump(self):
         """Serialize the dictionary back out."""
-        with open("%s/wordbank.dat" % INSTALL_DIR, "w") as f:
+        with open("%s/wordbank.dat" % BASHWORDS_DIR, "w") as f:
             cPickle.dump(self, f)
 
     def sort(self, sortfnc):
@@ -247,25 +245,82 @@ def fromFile(dict):
     filename = raw_input("Name of file to extract from: ")
     dict.fromFile(filename)
 
+def cycle():
+    """
+    Unpickle dictionary, select a random word, load relevant
+    information into BASH environment.
+    """
+    dict = loadDict()
+
+    if dict.len == 0:
+        os.system('touch %s/exports.sh' % BASHWORDS_DIR)
+        print "Add words to bashwords with `addword'."
+        exit()
+    else:
+        word = dict.nextWord()
+        del dict # free dict ASAP
+
+        name = word.name
+        defin = word.defin
+        syns = word.syns
+
+        with open('%s/exports.sh' % BASHWORDS_DIR, 'w') as f:
+            f.writelines(['export currWord="%s"\n' % name,
+                          'export currDefinition="%s"\n' % defin,
+                          'export currSynonyms="%s"\n' % syns,
+                          'PS1="$currWord $PS1"\n'])
+     
 # -------------------
 # utilities
 # -------------------
 
 def loadDict():
     """Crack the dictionary open, return it."""
-    with open("%s/wordbank.dat" % INSTALL_DIR, "r") as f:
+    with open("%s/wordbank.dat" % BASHWORDS_DIR, "r") as f:
         dict = cPickle.load(f)
     return dict
+
+# -------------------
+# initialization
+# -------------------
+def init():
+    """Create bashdefs.sh, then create the workbank."""
+    lines = ["BASHWORDS_DIR=%s\n" % BASHWORDS_DIR,
+             "alias defword='python ${BASHWORDS_DIR}/bashwords define'\n",
+             "alias addword='python ${BASHWORDS_DIR}/bashwords add'\n",
+             "alias lswords='python ${BASHWORDS_DIR}/bashwords ls'\n",
+             "alias rmword='python ${BASHWORDS_DIR}/bashwords delete'\n",
+             "${BASHWORDS_DIR}/bashwords cycle\n",
+             "source ${BASHWORDS_DIR}/exports.sh\n"]
+    with open('%s/bashdefs.sh' % BASHWORDS_DIR, 'w') as f:
+        f.writelines(lines)
+        print("%s/bashdefs.sh created." % BASHWORDS_DIR)
+
+    if os.path.exists("./wordbank.dat"):
+        overw = raw_input("Overwrite your dictionary? [y/n] ")
+        if overw.lower() != "y":
+            exit()
+
+    wb = wordbank()
+    with open("%s/wordbank.dat" % BASHWORDS_DIR, "w") as out:
+        cPickle.dump(wb, out)
+        print("Dictionary created.")
+
+    print("Initialized successfully.")
 
 if __name__ == '__main__':
     import sys
     choice = sys.argv[1]
-    dict   = loadDict()
 
-    {'add':      add,
-     'define':   define,
-     'delete':   delete,
-     'ls':       lsWords,
-     'toFile':   toFile,
-     'fromFile': fromFile}[choice](dict)
+    if choice == 'cycle':
+        cycle()
+    elif choice == 'init':
+        init()
+    else:
+        {'add':      add,
+         'define':   define,
+         'delete':   delete,
+         'ls':       lsWords,
+         'toFile':   toFile,
+         'fromFile': fromFile}[choice](loadDict())
 
