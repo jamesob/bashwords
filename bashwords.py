@@ -44,7 +44,6 @@ class word:
     def access(self):
         """Get information, update hit count."""
         self.hits += 1
-        return self.__getState()
 
 class wordbank(object):
     """This is our head-honcho; holds all words, average hit count, 
@@ -65,12 +64,28 @@ class wordbank(object):
             tot += getattr(w, prop)
         return tot/len(self.words)
 
+    def _compareBy(paramStr): 
+        """Return a function that compares two word objects by a specified 
+        parameter."""
+        return lambda a,b: cmp(getattr(a, paramStr), getattr(b, paramStr))
+     
     # lazy evaluation for the win. Properties are for tireless young
     # go-getters who cherish the weekends in sleek, beach-front summerhouses.
     avgAge = property(lambda self: self._calcAvg("age"), 
                       doc="average age of words")
     avgHits = property(lambda self: self._calcAvg("hits"), 
                        doc="avg hits on words")
+    len     = property(lambda self: len(self.words))
+
+    _cmpName = _compareBy("name")
+
+    def dump(self):
+        """Serialize the dictionary back out."""
+        with open("%s/wordbank.dat" % installDir, "w") as f:
+            cPickle.dump(self, f)
+
+    def sort(self, sortfnc=_cmpName):
+        self.words.sort(sortfnc)
 
     def _listSorted(self, sortfnc):
         """Print list of word bank entries sorted by some function."""
@@ -78,11 +93,7 @@ class wordbank(object):
         for i in self.words:
             print(i.name)
 
-    def _compareBy(self, paramStr): 
-        """Return a function that compares two word objects by a specified 
-        parameter."""
-        return lambda a,b: cmp(getattr(a, paramStr), getattr(b, paramStr))
-
+    
     def printByAlpha(self): 
         sortfnc = self._compareBy("name")
         self._listSorted(sortfnc)
@@ -99,18 +110,14 @@ class wordbank(object):
             self.words.append(newword)
         else:
             print("'%s' already in word bank!" % name)
+        self.dump()
 
-    def shortAdd(self, word):
-        if word.name not in self.words:
-            self.words.append(word)
-        else:
-            print("'%s' already in word bank!" % name)
-
+    
     def remove(self, name):
         """Takes a name (string) of the word to delete then removes it."""
-
         if name in self.words:
             del self.words[name]
+            self.dump()
             print("'%s' removed from word bank successfully." % name)
         else:
             print("'%s' not in word bank!" % name)
@@ -118,8 +125,11 @@ class wordbank(object):
     def nextWord(self):
         """Pops a random word from the stack and access the word, thereby
         returning the word's information to cycle.py."""
+        word = random.choice(self.words)
+        word.access()
+        self.dump() # to record word hit
 
-        return random.choice(self.words)
+        return word
     
     def toFile(self, filename):
         """Outputs all words in wordbank to file."""
@@ -143,19 +153,27 @@ class wordbank(object):
                 defin = lines.pop(0)
                 syns = lines.pop(0).split(',')
                 newword = word(name, defin, syns)
-                self.shortAdd(newword)
+                self._shortAdd(newword)
                 # remove hits, newline
                 lines.pop(0)
+        self.dump()
 
+    def _shortAdd(self, word):
+        if word.name not in self.words:
+            self.words.append(word)
+            self.dump()
+        else:
+            print("'%s' already in word bank!" % name)
+     
 # -------------------
 # actions
 # -------------------
 
 def define(dict):
     """Define the current word according to the env variable."""
-    word    = os.getenv("currWord")
-    defin   = os.getenv("currDefinition")
-    syns    = os.getenv("currSynonyms")
+    word  = os.getenv("currWord")
+    defin = os.getenv("currDefinition")
+    syns  = os.getenv("currSynonyms")
 
     print("  %s\n  Definition: %s\n  Synonyms: %s"
           % (word, defin, syns))
@@ -165,23 +183,20 @@ def add(dict):
     Crack open the dictionary with cPickle, add the word, then
     dump it back to file.
     """
-
     dict.add()
-    
-    numEntries = len(dict.words)
-    dumpDict(dict)
-
-    print("Word added. %d total words in collection." % numEntries)
+    print("Word added. %d total words in collection." % dict.len)
 
 def delete(dict):
     """Open the dictionary, delete an entry, dump modified dictionary."""
     mark = raw_input("Word to delete: ").lower()
     dict.remove(mark)
-    dumpDict(dict)
 
 def lsWords(dict):
     """List all words currently in dictionary."""
-    dict.printByAlpha()
+    dict.sort()
+    print "%30s %4s %4s" % ("name", "hits", "age (days)")
+    for w in dict.words:
+        print "%30s %4d %4d" % (w.name, w.hits, w.age)
 
 def toFile(dict):
     filename = raw_input("Name of file to write to: ")
@@ -190,7 +205,6 @@ def toFile(dict):
 def fromFile(dict):
     filename = raw_input("Name of file to extract from: ")
     dict.fromFile(filename)
-    dumpDict(dict)
 
 # -------------------
 # utilities
@@ -204,24 +218,16 @@ def loadDict():
 
     return dict
 
-def dumpDict(newDict):
-    """Serialize the dictionary back out."""
-    
-    with open("%s/wordbank.dat" % installDir, "w") as f:
-        cPickle.dump(newDict, f)
-
-    return True
-
 if __name__ == '__main__':
     import sys
     choice = sys.argv[1]
 
     dict = loadDict()
 
-    {'add':     add,
-     'define':  define,
-     'delete':  delete,
-     'lswords': lsWords,
-     'toFile': toFile,
+    {'add':      add,
+     'define':   define,
+     'delete':   delete,
+     'ls':       lsWords,
+     'toFile':   toFile,
      'fromFile': fromFile}[choice](dict)
 
