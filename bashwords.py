@@ -194,9 +194,10 @@ def delete(dict):
 def lsWords(dict):
     """List all words currently in dictionary."""
     dict.sort()
-    print "%30s %4s %4s" % ("name", "hits", "age (days)")
+    print "{0:<25s} {1:<6s} {2:<6s}".format("name", "hits", "age (days)")
+    print
     for w in dict.words:
-        print "%30s %4d %4d" % (w.name, w.hits, w.age)
+        print "{0:<25s} {1:<6d} {2:<6d}".format(w.name, w.hits, w.age)
 
 def toFile(dict):
     filename = raw_input("Name of file to write to: ")
