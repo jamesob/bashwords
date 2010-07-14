@@ -16,6 +16,13 @@ from setup import installDir
 home  = os.getenv("HOME")
 today = datetime.date.today()
 
+DEBUG = 0
+
+def dprint(str):
+    """For debugging."""
+    if DEBUG:
+        print str
+
 # -------------------
 # class defs
 # -------------------
@@ -45,6 +52,9 @@ class word:
         """Get information, update hit count."""
         self.hits += 1
 
+    def __repr__(self):
+        return "word '%s'" % self.name
+
 class wordbank(object):
     """This is our head-honcho; holds all words, average hit count, 
     average age, and manages prioritization."""
@@ -68,7 +78,7 @@ class wordbank(object):
             tot += getattr(w, prop)
         return tot/len(self.words)
 
-    def _compareBy(paramStr): 
+    def _compareBy(self, paramStr): 
         """Return a function that compares two word objects by a specified 
         parameter."""
         return lambda a,b: cmp(getattr(a, paramStr), getattr(b, paramStr))
@@ -81,27 +91,25 @@ class wordbank(object):
                        doc="avg hits on words")
     len     = property(lambda self: len(self.words))
 
-    _cmpName = _compareBy("name")
-    _cmpHits = _compareBy("hits")
-
     def _dump(self):
         """Serialize the dictionary back out."""
         with open("%s/wordbank.dat" % installDir, "w") as f:
             cPickle.dump(self, f)
 
-    def sort(self, sortfnc=_cmpName):
+    def sort(self, sortfnc):
         self.words.sort(sortfnc)
 
-    def listSorted(self, sortfnc=_cmpName):
+    def listSorted(self, sortfnc=None):
         """
         Print list of word bank entries sorted by some function.
 
         TODO: size columns based on max length of words.
         """
+        sortfnc = sortfnc or self._compareBy("name")
         self.sort(sortfnc)
         print "{0:<25s} {1:<6s} {2:<6s}".format("name", "hits", "age (days)")
         print
-        for w in dict.words:
+        for w in self.words:
             print "{0:<25s} {1:<6d} {2:<6d}".format(w.name, w.hits, w.age)
 
     def printByAlpha(self): 
@@ -134,6 +142,7 @@ class wordbank(object):
     def nextWord(self):
         """Pops a random word from the stack and access the word, thereby
         returning the word's information to cycle.py."""
+        dprint(self.cache)
         if not self.cache:
             self._populateCache()
 
@@ -144,7 +153,7 @@ class wordbank(object):
 
     def _populateCache(self):
         cacheSize = self.len/3 + 1
-        self.sort(sortfnc=_cmpHits)
+        self.sort(self._compareBy("hits"))
 
         for i in range(cacheSize):
             self.cache.append(self.words[i])
