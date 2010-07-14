@@ -8,9 +8,9 @@ All it does is affix a pseudo-random vocabulary
 word from a user-defined (that's you) dictionary to your
 command prompt; e.g,
 
-    analgesic|host:dir usr$
+    analgesic host:dir usr$
 
-It makes sure that your base of vocabulary words gets even coverage,
+It makes sure that your base of vocabulary words gets uniform coverage,
 while incorporating a little bit of randomness.
 
 ## Unsure of a word's meaning? Use "defword".
@@ -52,11 +52,18 @@ while incorporating a little bit of randomness.
   won't be held liable if you ralph while browsing the source.
 
 ## To install
-    0. crack open setup.py and specify an install directory
-       if you want somewhere other than the default, 
-       "~/.bashwords/"
-    1. run "python setup.py install"
+  1. Throw the `bashwords` python file into a folder, say `~/.bashwords`.
+     (If you don't choose `~/.bashwords`, modify `BASHWORDS_DIR` in 
+     `bashwords` to ensure it matches the directory it's in.)
+  2. Make `bashwords` executable:
+       $ chmod +x bashwords
+  3. Initialize:
+       $ ./bashwords init
+  4. Source the generated file in your `.bashrc` or `.bash_profile`:
+       source [your bashwords directory]/bashdefs.sh
+  5. Open a new shell.
 
+Done!
     
 Copyright (c) 2009 James O'Beirne
 
