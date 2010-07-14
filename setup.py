@@ -46,9 +46,9 @@ def writeToBash():
     shutil.copy(home + '/.bash_profile', home + '/.bash_profile.bak')
 
     # tell BASHenheim vherein to finden der commands
-    defs = "\nalias define='python " + installDir + "/bashwords.py define'" + \
+    defs = "\nalias defword='python " + installDir + "/bashwords.py define'" + \
            "\nalias addword='python " + installDir + "/bashwords.py add'" + \
-           "\nalias lswords='python " + installDir + "/bashwords.py lswords'" + \
+           "\nalias lswords='python " + installDir + "/bashwords.py ls'" + \
            "\nalias rmword='python " + installDir + "/bashwords.py delete'" + \
            "\npython " + installDir + "/cycle.py" + \
            "\nsource " + installDir + "/exports.sh\n"

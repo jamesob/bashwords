@@ -36,7 +36,7 @@ def cycle():
         f.writelines(['export currWord="%s"\n' % name,
                       'export currDefinition="%s"\n' % defin,
                       'export currSynonyms="%s"\n' % syns,
-                      'PS1="$currWord|$PS1"\n'])
+                      'PS1="$currWord $PS1"\n'])
 
 if __name__ == '__main__':
     cycle()

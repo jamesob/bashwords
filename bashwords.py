@@ -152,9 +152,9 @@ class wordbank(object):
         return word
 
     def _populateCache(self):
+        """Build a cache for `nextWord`."""
         cacheSize = self.len/3 + 1
         self.sort(self._compareBy("hits"))
-
         for i in range(cacheSize):
             self.cache.append(self.words[i])
     
@@ -219,8 +219,7 @@ def delete(dict):
     dict.remove(mark)
 
 def lsWords(dict):
-    """List all words currently in dictionary.
-    """
+    """List all words currently in dictionary."""
     dict.listSorted()
 
 def toFile(dict):
@@ -237,17 +236,14 @@ def fromFile(dict):
 
 def loadDict():
     """Crack the dictionary open, return it."""
-
     with open("%s/wordbank.dat" % installDir, "r") as f:
         dict = cPickle.load(f)
-
     return dict
 
 if __name__ == '__main__':
     import sys
     choice = sys.argv[1]
-
-    dict = loadDict()
+    dict   = loadDict()
 
     {'add':      add,
      'define':   define,
