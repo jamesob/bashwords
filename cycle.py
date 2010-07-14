@@ -5,7 +5,7 @@ import random
 import cPickle
 import os
 
-from setup import installDir
+from setup import INSTALL_DIR
 from bashwords import wordbank, word, loadDict
 
 # cycle is separated from bashwords.py for the sake of speed;
@@ -17,11 +17,11 @@ def cycle():
     Unpickles dictionary, selects a random word, loads relevant
     information into BASH's environment.
     """
-    with open("%s/wordbank.dat" % installDir, "r") as f:
+    with open("%s/wordbank.dat" % INSTALL_DIR, "r") as f:
         dict = cPickle.load(f)
 
     if dict.len == 0:
-        os.system('touch %s/exports.sh' % installDir)
+        os.system('touch %s/exports.sh' % INSTALL_DIR)
         print "Add words to bashwords with `addword'."
         exit()
 
@@ -32,7 +32,7 @@ def cycle():
     defin = word.defin
     syns = word.syns
 
-    with open('%s/exports.sh' % installDir, 'w') as f:
+    with open('%s/exports.sh' % INSTALL_DIR, 'w') as f:
         f.writelines(['export currWord="%s"\n' % name,
                       'export currDefinition="%s"\n' % defin,
                       'export currSynonyms="%s"\n' % syns,

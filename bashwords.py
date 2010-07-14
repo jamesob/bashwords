@@ -7,7 +7,7 @@ import cPickle
 import random
 
 # where are we?
-from setup import installDir
+from setup import INSTALL_DIR
 
 # -------------------
 # globals
@@ -16,7 +16,7 @@ from setup import installDir
 home  = os.getenv("HOME")
 today = datetime.date.today()
 
-DEBUG = 0
+DEBUG = 1
 
 def dprint(str):
     """For debugging."""
@@ -58,6 +58,17 @@ class word:
 class wordbank(object):
     """This is our head-honcho; holds all words, average hit count, 
     average age, and manages prioritization."""
+
+    def bankTransaction(func):
+        """
+        A decorator which ensures functions serialize a modified `wordbank` out.
+        """
+        def trans(*args):
+            self = args[0]
+            ret = func(*args)
+            self._dump()
+            return ret
+        return trans
     
     def __init__(self):
         """
@@ -93,7 +104,7 @@ class wordbank(object):
 
     def _dump(self):
         """Serialize the dictionary back out."""
-        with open("%s/wordbank.dat" % installDir, "w") as f:
+        with open("%s/wordbank.dat" % INSTALL_DIR, "w") as f:
             cPickle.dump(self, f)
 
     def sort(self, sortfnc):
@@ -116,6 +127,7 @@ class wordbank(object):
         sortfnc = self._compareBy("name")
         self._listSorted(sortfnc)
 
+    @bankTransaction
     def add(self):
         """Add a word object to the dictionary."""
 
@@ -128,17 +140,17 @@ class wordbank(object):
             self.words.append(newword)
         else:
             print("'%s' already in word bank!" % name)
-        self._dump()
     
+    @bankTransaction
     def remove(self, name):
         """Takes a name (string) of the word to delete then removes it."""
         if name in self.words:
             del self.words[name]
-            self._dump()
             print("'%s' removed from word bank successfully." % name)
         else:
             print("'%s' not in word bank!" % name)
 
+    @bankTransaction
     def nextWord(self):
         """Pops a random word from the stack and access the word, thereby
         returning the word's information to cycle.py."""
@@ -148,7 +160,6 @@ class wordbank(object):
 
         word = self.cache.pop(0)
         word.access()
-        self._dump() # to record word hit
         return word
 
     def _populateCache(self):
@@ -170,6 +181,7 @@ class wordbank(object):
                 wordinfo = [l + "\n" for l in wordinfo]
                 f.writelines(wordinfo)
 
+    @bankTransaction
     def fromFile(self, filename):
         """Intakes words from a file."""
         with open(filename, "r") as f:
@@ -185,6 +197,7 @@ class wordbank(object):
                 lines.pop(0)
         self._dump()
 
+    @bankTransaction
     def _shortAdd(self, word):
         if word.name not in self.words:
             self.words.append(word)
@@ -236,7 +249,7 @@ def fromFile(dict):
 
 def loadDict():
     """Crack the dictionary open, return it."""
-    with open("%s/wordbank.dat" % installDir, "r") as f:
+    with open("%s/wordbank.dat" % INSTALL_DIR, "r") as f:
         dict = cPickle.load(f)
     return dict
 
