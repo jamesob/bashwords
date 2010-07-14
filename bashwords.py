@@ -54,7 +54,7 @@ class wordbank(object):
         """The dictionary "words" holds all words currently in dictionary."""
         self.words  = []
 
-    def __calcAvg(self, prop):
+    def _calcAvg(self, prop):
         """Calculate the average value of some scalar property for each
         word in the dictionary."""
 
@@ -67,25 +67,25 @@ class wordbank(object):
 
     # lazy evaluation for the win. Properties are for tireless young
     # go-getters who cherish the weekends in sleek, beach-front summerhouses.
-    avgAge = property(lambda self: self.__calcAvg("age"), 
+    avgAge = property(lambda self: self._calcAvg("age"), 
                       doc="average age of words")
-    avgHits = property(lambda self: self.__calcAvg("hits"), 
+    avgHits = property(lambda self: self._calcAvg("hits"), 
                        doc="avg hits on words")
 
-    def __listSorted(self, sortfnc):
+    def _listSorted(self, sortfnc):
         """Print list of word bank entries sorted by some function."""
         self.words.sort(sortfnc)
         for i in self.words:
             print(i.name)
 
-    def __compareBy(self, paramStr): 
+    def _compareBy(self, paramStr): 
         """Return a function that compares two word objects by a specified 
         parameter."""
         return lambda a,b: cmp(getattr(a, paramStr), getattr(b, paramStr))
 
     def printByAlpha(self): 
-        sortfnc = self.__compareBy("name")
-        self.__listSorted(sortfnc)
+        sortfnc = self._compareBy("name")
+        self._listSorted(sortfnc)
 
     def add(self):
         """Add a word object to the dictionary."""
@@ -119,7 +119,7 @@ class wordbank(object):
         """Pops a random word from the stack and access the word, thereby
         returning the word's information to cycle.py."""
 
-        return self.words[random.randint(0, len(self.words)-1)]
+        return random.choice(self.words)
     
     def toFile(self, filename):
         """Outputs all words in wordbank to file."""
