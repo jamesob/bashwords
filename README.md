@@ -15,14 +15,14 @@ while incorporating a little bit of randomness.
 
 ## Unsure of a word's meaning? Use "defword".
 
-    analgesic|host:dir usr$ defword
+    analgesic host:dir usr$ defword
       analgesic
       Definition: acting to relieve pain
       Synonyms: ['anesthetic', 'anodyne']
   
 ## Like to add a word? Use "addword".
 
-    analgesic|host:dir usr$ addword
+    analgesic host:dir usr$ addword
     Which word would you like to add?: ameliorate
     Its definition?: make something (bad or unsatisfactory) better
     Some synonyms? (delimit each with ','): enhance, alleviate 
@@ -30,7 +30,7 @@ while incorporating a little bit of randomness.
 
 ## How about deleting? Use "delword".
 
-    analgesic|host:dir usr$ delword
+    analgesic host:dir usr$ delword
     Word to delete: ameliorate
     Entry for 'ameliorate' successfully removed.
 
@@ -45,11 +45,6 @@ while incorporating a little bit of randomness.
 
   Dump all words currently in bank to file with
   "python bashwords.py toFile". File comes in same format as above.
-
-  ------------------------
-
-  Bashwords has, by no means, been optimized for performance and I
-  won't be held liable if you ralph while browsing the source.
 
 ## To install
   1. Throw the `bashwords` python file into a folder, say `~/.bashwords`.
