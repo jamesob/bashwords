@@ -1,5 +1,5 @@
 
-# bashwords - vocab in bash
+# bashwords - learn vocabulary from your shell
 
 bashwords is a very minimal vocabulary trainer for the BASH
 environment. It was designed with simplicity in mind.
