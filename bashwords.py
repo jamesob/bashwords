@@ -50,8 +50,12 @@ class wordbank(object):
     average age, and manages prioritization."""
     
     def __init__(self):
-        """The dictionary "words" holds all words currently in dictionary."""
-        self.words  = []
+        """
+        `words` holds all words in `wordbank`.
+        `cache` holds a certain number of words ready to be accessed.
+        """
+        self.words = []
+        self.cache = []
 
     def _calcAvg(self, prop):
         """Calculate the average value of some scalar property for each
@@ -78,8 +82,9 @@ class wordbank(object):
     len     = property(lambda self: len(self.words))
 
     _cmpName = _compareBy("name")
+    _cmpHits = _compareBy("hits")
 
-    def dump(self):
+    def _dump(self):
         """Serialize the dictionary back out."""
         with open("%s/wordbank.dat" % installDir, "w") as f:
             cPickle.dump(self, f)
@@ -87,13 +92,18 @@ class wordbank(object):
     def sort(self, sortfnc=_cmpName):
         self.words.sort(sortfnc)
 
-    def _listSorted(self, sortfnc):
-        """Print list of word bank entries sorted by some function."""
-        self.words.sort(sortfnc)
-        for i in self.words:
-            print(i.name)
+    def listSorted(self, sortfnc=_cmpName):
+        """
+        Print list of word bank entries sorted by some function.
 
-    
+        TODO: size columns based on max length of words.
+        """
+        self.sort(sortfnc)
+        print "{0:<25s} {1:<6s} {2:<6s}".format("name", "hits", "age (days)")
+        print
+        for w in dict.words:
+            print "{0:<25s} {1:<6d} {2:<6d}".format(w.name, w.hits, w.age)
+
     def printByAlpha(self): 
         sortfnc = self._compareBy("name")
         self._listSorted(sortfnc)
@@ -110,14 +120,13 @@ class wordbank(object):
             self.words.append(newword)
         else:
             print("'%s' already in word bank!" % name)
-        self.dump()
-
+        self._dump()
     
     def remove(self, name):
         """Takes a name (string) of the word to delete then removes it."""
         if name in self.words:
             del self.words[name]
-            self.dump()
+            self._dump()
             print("'%s' removed from word bank successfully." % name)
         else:
             print("'%s' not in word bank!" % name)
@@ -125,11 +134,20 @@ class wordbank(object):
     def nextWord(self):
         """Pops a random word from the stack and access the word, thereby
         returning the word's information to cycle.py."""
-        word = random.choice(self.words)
-        word.access()
-        self.dump() # to record word hit
+        if not self.cache:
+            self._populateCache()
 
+        word = self.cache.pop(0)
+        word.access()
+        self._dump() # to record word hit
         return word
+
+    def _populateCache(self):
+        cacheSize = self.len/3 + 1
+        self.sort(sortfnc=_cmpHits)
+
+        for i in range(cacheSize):
+            self.cache.append(self.words[i])
     
     def toFile(self, filename):
         """Outputs all words in wordbank to file."""
@@ -156,12 +174,12 @@ class wordbank(object):
                 self._shortAdd(newword)
                 # remove hits, newline
                 lines.pop(0)
-        self.dump()
+        self._dump()
 
     def _shortAdd(self, word):
         if word.name not in self.words:
             self.words.append(word)
-            self.dump()
+            self._dump()
         else:
             print("'%s' already in word bank!" % name)
      
@@ -192,12 +210,9 @@ def delete(dict):
     dict.remove(mark)
 
 def lsWords(dict):
-    """List all words currently in dictionary."""
-    dict.sort()
-    print "{0:<25s} {1:<6s} {2:<6s}".format("name", "hits", "age (days)")
-    print
-    for w in dict.words:
-        print "{0:<25s} {1:<6d} {2:<6d}".format(w.name, w.hits, w.age)
+    """List all words currently in dictionary.
+    """
+    dict.listSorted()
 
 def toFile(dict):
     filename = raw_input("Name of file to write to: ")
