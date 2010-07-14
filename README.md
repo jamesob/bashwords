@@ -20,7 +20,7 @@ while incorporating a little bit of randomness.
     analgesic|host:dir usr$ defword
       analgesic
       Definition: acting to relieve pain
-      Synonyms: ['anesthetic', ' anodyne']
+      Synonyms: ['anesthetic', 'anodyne']
   
 ## Like to add a word? Use "addword".
 
