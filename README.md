@@ -1,16 +1,14 @@
 
-# bashwords - a work in progress, by jamesob
+# bashwords - a work in progress
 
 bashwords is a very minimal vocabulary trainer for the BASH
-environment. It was designed with simplicity at the forefront.
+environment. It was designed with simplicity in mind.
 
-All it does is affixe a pseudo-random vocabulary
+All it does is affix a pseudo-random vocabulary
 word from a user-defined (that's you) dictionary to your
 command prompt; e.g,
 
     analgesic|host:dir usr$
-    apropos|host:dir usr$
-    bucolic|host:dir usr$
 
 It makes sure that your base of vocabulary words gets even coverage,
 while incorporating a little bit of randomness.
@@ -36,7 +34,7 @@ while incorporating a little bit of randomness.
     Word to delete: ameliorate
     Entry for 'ameliorate' successfully removed.
 
-List all words in dictionary with "lswords".
+### List all words in dictionary with "lswords".
 
 ## Batch import words with "python bashwords.py fromFile".
   File format:
