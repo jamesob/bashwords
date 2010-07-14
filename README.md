@@ -1,6 +1,5 @@
 
-# bashwords - a work in progress
-by jamesob
+# bashwords - a work in progress, by jamesob
 
 bashwords is a very minimal vocabulary trainer for the BASH
 environment. It was designed with simplicity at the forefront.
