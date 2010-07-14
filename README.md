@@ -55,12 +55,24 @@ while incorporating a little bit of randomness.
   1. Throw the `bashwords` python file into a folder, say `~/.bashwords`.
      (If you don't choose `~/.bashwords`, modify `BASHWORDS_DIR` in 
      `bashwords` to ensure it matches the directory it's in.)
+
+       $ git clone git@github.com:jamesob/bashwords.git
+       $ cd bashwords
+       $ mv bashwords ~/.bashwords/.
+
   2. Make `bashwords` executable:
+
+       $ cd ~/.bashwords
        $ chmod +x bashwords
+
   3. Initialize:
+
        $ ./bashwords init
+
   4. Source the generated file in your `.bashrc` or `.bash_profile`:
+
        source [your bashwords directory]/bashdefs.sh
+
   5. Open a new shell.
 
 Done!
