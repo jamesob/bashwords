@@ -15,9 +15,9 @@ command prompt; e.g,
 It makes sure that your base of vocabulary words gets even coverage,
 while incorporating a little bit of randomness.
 
-## Unsure of a word's meaning? Use "define".
+## Unsure of a word's meaning? Use "defword".
 
-    analgesic|host:dir usr$ define
+    analgesic|host:dir usr$ defword
       analgesic
       Definition: acting to relieve pain
       Synonyms: ['anesthetic', ' anodyne']
