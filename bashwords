@@ -16,7 +16,7 @@ import random
 # change this if you like 
 BASHWORDS_DIR = "%s/.bashwords" % os.getenv("HOME")
 
-DEBUG = 1
+DEBUG = 0
 
 def dprint(str):
     """For debugging."""
