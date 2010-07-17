@@ -286,10 +286,10 @@ def loadDict():
 def init():
     """Create bashdefs.sh, then create the workbank."""
     lines = ["BASHWORDS_DIR=%s\n" % BASHWORDS_DIR,
-             "alias defword='python ${BASHWORDS_DIR}/bashwords define'\n",
-             "alias addword='python ${BASHWORDS_DIR}/bashwords add'\n",
-             "alias lswords='python ${BASHWORDS_DIR}/bashwords ls'\n",
-             "alias rmword='python ${BASHWORDS_DIR}/bashwords delete'\n",
+             "alias defword='${BASHWORDS_DIR}/bashwords define'\n",
+             "alias addword='${BASHWORDS_DIR}/bashwords add'\n",
+             "alias lswords='${BASHWORDS_DIR}/bashwords ls'\n",
+             "alias rmword='${BASHWORDS_DIR}/bashwords delete'\n",
              "${BASHWORDS_DIR}/bashwords cycle\n",
              "source ${BASHWORDS_DIR}/exports.sh\n"]
     with open('%s/bashdefs.sh' % BASHWORDS_DIR, 'w') as f:
